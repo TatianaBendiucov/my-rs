@@ -1,25 +1,13 @@
-import { Component } from 'react';
-import Header from '../components/Header';
-import Body from '../components/Body';
-
-interface SearchProps {
-  params: object;
-}
-
-interface SearchResult {
-  name: string;
-}
-
-interface SearchState {
-  searchText: string;
-  results: SearchResult[];
-}
+import { Component } from "react";
+import Header from "../components/Header";
+import Body from "../components/Body";
+import { SearchProps, SearchState } from "../types/SearchTypes";
 
 class MainPage extends Component<SearchProps, SearchState> {
   constructor(props: SearchProps) {
     super(props);
     this.state = {
-      searchText: localStorage.getItem('searchText') || '',
+      searchText: localStorage.getItem("searchText") || "",
       results: [],
     };
   }
@@ -30,17 +18,17 @@ class MainPage extends Component<SearchProps, SearchState> {
 
   handleSearch = (newSearchText: string) => {
     const clearSearchText = newSearchText.trim();
-    localStorage.setItem('searchText', clearSearchText);
+    localStorage.setItem("searchText", clearSearchText);
 
     fetch(
       `https://stapi.co/api/v1/rest/animal/search?name=${clearSearchText}`,
       {
-        method: 'POST',
+        method: "POST",
       },
     )
       .then((response) => {
         if (!response.ok) {
-          throw new Error('Response was not ok');
+          throw new Error("Response was not ok");
         }
 
         return response.json();

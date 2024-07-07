@@ -1,13 +1,5 @@
-import React, { Component } from 'react';
-
-interface SearchInputProps {
-  searchText: string;
-  onSearch: (searchText: string) => void;
-}
-
-interface SearchInputState {
-  searchText: string;
-}
+import React, { Component } from "react";
+import { SearchInputProps, SearchInputState } from "../types/SearchTypes";
 
 class Header extends Component<SearchInputProps, SearchInputState> {
   constructor(props: SearchInputProps) {

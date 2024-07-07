@@ -1,16 +1,5 @@
-import { Component } from 'react';
-
-interface SearchResultItem {
-  name: string;
-}
-
-interface SearchResultState {
-  hasError: boolean;
-}
-
-interface SearchResultsProps {
-  results: SearchResultItem[];
-}
+import { Component } from "react";
+import { SearchResultsProps, SearchResultState } from "../types/SearchTypes";
 
 class Body extends Component<SearchResultsProps, SearchResultState> {
   constructor(props: SearchResultsProps) {
@@ -26,7 +15,7 @@ class Body extends Component<SearchResultsProps, SearchResultState> {
 
   render() {
     if (this.state.hasError) {
-      throw new Error('Error in event handler');
+      throw new Error("Error in event handler");
     }
 
     const { results } = this.props;
@@ -43,7 +32,7 @@ class Body extends Component<SearchResultsProps, SearchResultState> {
           <ul>
             {results.map((result, index) => (
               <li key={index}>
-                <strong>{result.name}</strong>                
+                <strong>{result.name}</strong>
               </li>
             ))}
           </ul>

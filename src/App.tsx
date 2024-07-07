@@ -1,8 +1,12 @@
+import ErrorBoundary from "./components/ErrorBoundary";
 import MainPage from "./pages/MainPage";
 
 function App() {
   return (
-    <MainPage params={{}} />
+    
+    <ErrorBoundary fallback={<p>ErrorBoundary: Something went wrong.</p>}>
+      <MainPage params={{}} />
+    </ErrorBoundary>
   );
 }
 

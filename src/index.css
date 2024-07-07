@@ -1,3 +1,7 @@
+#root {  
+  width: 100%;
+}
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -11,6 +15,7 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  
 }
 
 a {
@@ -25,7 +30,6 @@ a:hover {
 body {
   margin: 0;
   display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
 }
@@ -53,6 +57,9 @@ button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
+.btn-error {
+  background-color: #e06565;
+}
 
 @media (prefers-color-scheme: light) {
   :root {
@@ -65,4 +72,24 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+ul {
+  list-style-type: none;
+}
+
+.search-form {
+  margin: 10px auto;
+  width: 500px;
+  text-align: center;
+}
+
+.search-input {
+  height: 35px;
+}
+
+.search-results {  
+  margin: 10px auto;
+  width: 500px;
+  text-align: center;
 }

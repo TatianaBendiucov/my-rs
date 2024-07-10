@@ -18,7 +18,15 @@ class Body extends Component<SearchResultsProps, SearchResultState> {
       throw new Error("Error in event handler");
     }
 
-    const { results } = this.props;
+    const { loading, results } = this.props;
+
+    if (loading) {
+      return (
+        <div className="search-result">
+          <div>Loading...</div>
+        </div>
+      );
+    }
 
     return (
       <div className="search-results">

@@ -1,4 +1,4 @@
-#root {  
+#root {
   width: 100%;
 }
 
@@ -15,7 +15,6 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  
 }
 
 a {
@@ -88,7 +87,7 @@ ul {
   height: 35px;
 }
 
-.search-results {  
+.search-results {
   margin: 10px auto;
   width: 500px;
   text-align: center;

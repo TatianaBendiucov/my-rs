@@ -9,10 +9,12 @@ export interface SearchResult {
 export interface SearchState {
   searchText: string;
   results: SearchResult[];
+  loading: boolean;
 }
 
 export interface SearchResultsProps {
   results: SearchResult[];
+  loading: boolean;
 }
 
 export interface SearchResultState {

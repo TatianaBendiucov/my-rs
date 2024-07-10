@@ -9,6 +9,7 @@ class MainPage extends Component<SearchProps, SearchState> {
     this.state = {
       searchText: localStorage.getItem("searchText") || "",
       results: [],
+      loading: false,
     };
   }
 
@@ -19,6 +20,8 @@ class MainPage extends Component<SearchProps, SearchState> {
   handleSearch = (newSearchText: string) => {
     const clearSearchText = newSearchText.trim();
     localStorage.setItem("searchText", clearSearchText);
+
+    this.setState({ loading: true });
 
     fetch(
       `https://stapi.co/api/v1/rest/animal/search?name=${clearSearchText}`,
@@ -37,20 +40,22 @@ class MainPage extends Component<SearchProps, SearchState> {
         this.setState({
           searchText: clearSearchText,
           results: animals,
+          loading: false,
         });
       })
       .catch((error) => {
+        this.setState({ loading: false });
         throw new Error(error);
       });
   };
 
   render() {
-    const { searchText, results } = this.state;
+    const { searchText, results, loading } = this.state;
 
     return (
       <>
         <Header searchText={searchText} onSearch={this.handleSearch} />
-        <Body results={results} />
+        <Body loading={loading} results={results} />
       </>
     );
   }

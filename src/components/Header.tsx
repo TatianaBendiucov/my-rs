@@ -1,33 +1,23 @@
-import React, { Component } from "react";
-import { SearchInputProps, SearchInputState } from "../types/SearchTypes";
+import React, { useState } from "react";
+import { SearchInputProps } from "../types/SearchTypes";
 
-class Header extends Component<SearchInputProps, SearchInputState> {
-  constructor(props: SearchInputProps) {
-    super(props);
-    this.state = { searchText: props.searchText };
-  }
+const Header = ({ searchText, onSearch }: SearchInputProps) => {
+  const [searchInput, setSearchInput] = useState<string>(searchText);
 
-  handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ searchText: event.target.value.trim() });
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchInput(event.target.value.trim());
   };
 
-  handleSearch = () => {
-    this.props.onSearch(this.state.searchText);
+  const handleSearch = () => {
+    onSearch(searchInput);
   };
 
-  render() {
-    return (
-      <div className="search-form">
-        <input
-          className="search-input"
-          type="text"
-          value={this.state.searchText}
-          onChange={this.handleChange}
-        />
-        <button onClick={this.handleSearch}>Search</button>
-      </div>
-    );
-  }
-}
+  return (
+    <div className="search-form">
+      <input type="text" value={searchInput} onChange={handleChange} />
+      <button onClick={handleSearch}>Search</button>
+    </div>
+  );
+};
 
 export default Header;

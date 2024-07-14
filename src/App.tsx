@@ -1,12 +1,16 @@
-import ErrorBoundary from "./components/ErrorBoundary";
-import MainPage from "./pages/MainPage";
+import { Routes, Route } from "react-router-dom";
+import SearchPage from "./pages/SearchPage";
+import DetailPage from "./pages/DetailPage";
 
-function App() {
+const App = () => {
   return (
-    <ErrorBoundary fallback={<p>ErrorBoundary: Something went wrong.</p>}>
-      <MainPage params={{}} />
-    </ErrorBoundary>
+    <Routes>
+      <Route path={"/"} element={<SearchPage />}>
+        <Route path={"details"} element={<DetailPage />} />
+      </Route>
+      <Route path={"*"} element={<div>Page not found 404</div>} />
+    </Routes>
   );
-}
+};
 
 export default App;

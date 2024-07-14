@@ -3,7 +3,9 @@ export interface SearchProps {
 }
 
 export interface SearchResult {
+  uid: string;
   name: string;
+  earthAnimal: string;
 }
 
 export interface SearchState {
@@ -15,6 +17,13 @@ export interface SearchState {
 export interface SearchResultsProps {
   results: SearchResult[];
   loading: boolean;
+  pageNumber: number;
+}
+
+export interface ListItemProps {
+  item: SearchResult;
+  index: number;
+  pageNumber: number;
 }
 
 export interface SearchResultState {

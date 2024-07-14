@@ -1,55 +1,50 @@
-import { Component } from "react";
-import { SearchResultsProps, SearchResultState } from "../types/SearchTypes";
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { SearchResultsProps } from "../types/SearchTypes";
 
-class Body extends Component<SearchResultsProps, SearchResultState> {
-  constructor(props: SearchResultsProps) {
-    super(props);
-    this.state = { hasError: false };
-  }
+const Body = ({ loading, results, pageNumber }: SearchResultsProps) => {
+  const [hasError, setHasError] = useState(false);
 
-  handleClick = () => {
-    this.setState({
-      hasError: true,
-    });
+  const handleHasError = () => {
+    setHasError(true);
   };
 
-  render() {
-    if (this.state.hasError) {
-      throw new Error("Error in event handler");
-    }
+  if (hasError) {
+    throw new Error("Error in event handler");
+  }
 
-    const { loading, results } = this.props;
-
-    if (loading) {
-      return (
-        <div className="search-result">
-          <div>Loading...</div>
-        </div>
-      );
-    }
-
+  if (loading) {
     return (
-      <div className="search-results">
-        <h2>
-          Search for Star Trek Animals
-          <button className="btn-error" onClick={this.handleClick}>
-            Simulate an error
-          </button>
-        </h2>
-        {results.length ? (
-          <ul>
-            {results.map((result, index) => (
-              <li key={index}>
-                <strong>{result.name}</strong>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <div className="no-results">No results</div>
-        )}
+      <div className="search-result">
+        <div>Loading...</div>
       </div>
     );
   }
-}
+
+  return (
+    <div className="search-result">
+      <h2>
+        Search Star Trek Animals
+        <button className="btn-error" onClick={handleHasError}>
+          Get Error
+        </button>
+      </h2>
+      {results.length ? (
+        <ul>
+          {results.map((result, index) => (
+            <li key={index}>
+              <Link to={`/details?page=${pageNumber}&detail=${result.uid}`}>
+                <strong>{result.name}</strong> -
+                <span>Earth Animal: {result.earthAnimal ? "Yes" : "No"}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <div className="no-results">No results</div>
+      )}
+    </div>
+  );
+};
 
 export default Body;

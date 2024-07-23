@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import { SearchResultsProps } from "../types/SearchTypes";
+import ListItem from "./ListItem";
 
 const Body = ({ loading, results, pageNumber }: SearchResultsProps) => {
   const [hasError, setHasError] = useState(false);
 
+  console.log(loading);
   const handleHasError = () => {
     setHasError(true);
   };
@@ -15,7 +16,7 @@ const Body = ({ loading, results, pageNumber }: SearchResultsProps) => {
 
   if (loading) {
     return (
-      <div className="search-result">
+      <div className="search-result" key="loading">
         <div>Loading...</div>
       </div>
     );
@@ -32,12 +33,7 @@ const Body = ({ loading, results, pageNumber }: SearchResultsProps) => {
       {results.length ? (
         <ul>
           {results.map((result, index) => (
-            <li key={index}>
-              <Link to={`/details?page=${pageNumber}&detail=${result.uid}`}>
-                <strong>{result.name}</strong> -
-                <span>Earth Animal: {result.earthAnimal ? "Yes" : "No"}</span>
-              </Link>
-            </li>
+            <ListItem item={result} index={index} pageNumber={pageNumber} key={index}/>
           ))}
         </ul>
       ) : (

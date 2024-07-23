@@ -1,11 +1,21 @@
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
+  --primary-color: #1e90ff;
+  --secondary-color: #ff6347;
+  --background-color: #f0f0f0;
+  --text-color: #333;
+  --text-color-popup: #c4b1b1;
+  --link-color: #007bff;
+  --link-hover-color: #0056b3;
+  --button-bg-color: #007bff;
+  --button-hover-bg-color: #0056b3;
+  
+  font-family: Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color-scheme: light;
+  color: var(--text-color);
+  background-color: var(--background-color);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -26,48 +36,54 @@ body {
 
 a {
   font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
+  color: var(--link-color);
+  text-decoration: none;
 }
 a:hover {
-  color: #535bf2;
+  color: var(--link-hover-color);
 }
 
 h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+  font-size: 2.8em;
+  line-height: 1.2;
+  margin-bottom: 20px;
 }
 
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 5px 10px;
+  border-radius: 6px;
+  border: none;
+  padding: 12px 24px;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 600;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: var(--button-bg-color);
+  color: #fff;
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
 }
 button:hover {
-  border-color: #646cff;
+  background-color: var(--button-hover-bg-color);
 }
 button:focus,
 button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(30, 144, 255, 0.5);
 }
 
 .btn-error {
-  background-color: #f66161;
+  background-color: var(--secondary-color);
 }
 
 input[type="text"] {
   height: 40px;
-  padding: 0 10px;
+  padding: 0 12px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
 .container-center {
-  max-width: 900px;
+  max-width: 960px;
   padding: 15px;
   margin: 0 auto;
 }
@@ -75,21 +91,22 @@ input[type="text"] {
 .search-form {
   display: flex;
   justify-content: center;
-  padding: 10px;
+  align-items: center;
+  padding: 20px 0;
 }
 
 .search-result {
-  display: flex;
-  justify-content: center;
   text-align: left;
-  flex-direction: column;
-  padding: 30px 0;
+  padding: 20px 0;
   list-style: none;
 }
 
 .search-result h2 {
+  font-size: 1.8em;
+  margin-bottom: 15px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .search-result span {
@@ -107,55 +124,57 @@ input[type="text"] {
 }
 
 .no-results {
-  min-width: 300px;
-  padding: 10px;
-  background-color: #9ca1fd;
+  padding: 15px;
+  background-color: var(--secondary-color);
   color: #fff;
-  border-radius: 10px;
+  border-radius: 8px;
 }
 
 .pagination-result {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
-  gap: 30px;
+  gap: 20px;
 }
 
 .pagination-result__list {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  min-width: 150px;
+  min-width: 120px;
 }
 
 .pagination-result__title {
   width: 100%;
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 
-.pagination-result__item {
-  width: 30px;
-  padding: 5px;
+.pag-rez-item {
+  width: 40px;
+  padding: 8px;
   text-align: center;
-  border: 1px solid #ddd;
+  border: 1px solid #ccc;
+  border-radius: 4px;
   color: #fff;
+  background-color: var(--primary-color);
   cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
 }
 
-.pagination-result__item:hover {
-  background: #343dee;
-  color: #fff;
+.pag-rez-item:hover {
+  background-color: var(--secondary-color);
 }
 
-.pagination-result__item.current {
-  background: #9ca1fd;
-  color: #fff;
+.pag-rez-item.current {
+  background-color: var(--secondary-color);
 }
 
 .search-page {
   display: flex;
   justify-content: space-between;
-  gap: 30px;
-  padding: 0 50px;
+  gap: 40px;
+  padding: 0 40px;
 }
 
 .search-page__right,
@@ -166,12 +185,12 @@ input[type="text"] {
 .detail-page {
   position: relative;
   z-index: 2;
-  height: 100%;
-  padding: 30px 0 0 20px;
-  border-left: 2px solid #fff;
+  padding: 30px;
+  border-left: 2px solid var(--primary-color);
+  color: var(--text-color-popup); /* Changed text color */
 }
 
-.detail-overlay {
+.page-overlay {
   position: fixed;
   inset: 0;
   z-index: 1;

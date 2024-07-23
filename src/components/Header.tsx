@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { SearchInputProps } from "../types/SearchTypes";
+import ThemedComponent from "./ThemeComponent";
 
 const Header = ({ searchText, onSearch }: SearchInputProps) => {
   const [searchInput, setSearchInput] = useState<string>(searchText);
@@ -13,10 +14,13 @@ const Header = ({ searchText, onSearch }: SearchInputProps) => {
   };
 
   return (
-    <div className="search-form">
-      <input type="text" value={searchInput} onChange={handleChange} />
-      <button onClick={handleSearch}>Search</button>
-    </div>
+    <header>
+      <ThemedComponent />
+      <div className="search-form">
+        <input type="text" value={searchInput} onChange={handleChange} />
+        <button onClick={handleSearch}>Search</button>
+      </div>
+    </header>
   );
 };
 

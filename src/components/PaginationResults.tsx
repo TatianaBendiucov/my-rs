@@ -22,7 +22,7 @@ const PaginationResults = ({
           return (
             <Link
               key={el}
-              className={`pagination-result__item${pageNumber - 1 === el ? " current" : ""}`}
+              className={`pag-rez-item${pageNumber - 1 === el ? " current" : ""}`}
               to={`?page=${el + 1}`}
             >
               {el + 1}
@@ -39,7 +39,7 @@ const PaginationResults = ({
           return (
             <div
               key={el}
-              className={`pagination-result__item${page === perPage ? " current" : ""}`}
+              className={`pag-rez-item${page === perPage ? " current" : ""}`}
               onClick={() => handlePerPage(page)}
             >
               {page}

@@ -67,7 +67,7 @@ const DetailPage = () => {
   }, []);
 
   return (
-    <>
+    <div style={{ background: 'var(--background)', color: 'var(--color)', padding: '1rem' }}>
       <div className="detail-page">
         <button ref={buttonRef} onClick={onDismiss}>
           Close
@@ -99,8 +99,8 @@ const DetailPage = () => {
           </table>
         )}
       </div>
-      <div className="detail-overlay" onClick={onDismiss}></div>
-    </>
+      <div className="page-overlay" onClick={onDismiss}></div>
+    </div>
   );
 };
 

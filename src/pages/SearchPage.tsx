@@ -1,79 +1,39 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Outlet } from "react-router-dom";
-import { SearchResult } from "../types/SearchTypes";
 import Header from "../components/Header";
 import Body from "../components/Body";
 import PaginationResults from "../components/PaginationResults";
-import useSearchQuery from "../hooks/useSearchQuery";
+import { useSearchItemsQuery } from "../store/listFetchReducer";
+import DownloadCsv from "../components/DownloadCsv";
 
 const SearchPage = () => {
   const [firstLoader, setFirstLoader] = useState<boolean>(true);
-  const [searchText, setSearchText] = useSearchQuery("searchText", "");
-  const [results, setResults] = useState<SearchResult[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [searchTerm, setSearchTerm] = useState('');
+  const [perPage, setPerPage] = useState(10);
   const [pageNumber, setPageNumber] = useState<number>(
-    Number(searchParams.get("page") || 1),
-  );
-  const [totalPages, setTotalPages] = useState<number>(0);
-  const [perPage, setPerPage] = useState<number>(10);
+      Number(searchParams.get("page") || 1),
+    );
 
-  const handleSearchParams = (param: URLSearchParams) => {
-    setSearchParams(param);
-  };
+  const { data, error, isLoading } = useSearchItemsQuery({ searchTerm, pageNumber, perPage });
 
-  const handleSearchText = (param: string) => {
-    setSearchText(param);
-  };
-
-  const handleLoading = (param: boolean) => {
-    setLoading(param);
-  };
-
-  const handleResults = (param: []) => {
-    setResults(param);
+  const handleSearch = (param: string) => {
+    setSearchTerm(param);
+    setSearchParams({ searchTerm: param, page: pageNumber.toString(), perPage: perPage.toString()});
   };
 
   const handlePageNumber = (param: number) => {
     setPageNumber(param);
   };
 
-  const handleTotalPages = (param: number) => {
-    setTotalPages(param);
-  };
-
   const handlePerPage = (param: number) => {
     setPerPage(param);
+     setSearchParams({ searchTerm: searchTerm, page: param.toString(), perPage: param.toString()});
   };
 
-  const handleSearch = (newSearchText: string) => {
-    const clearSearchText = newSearchText.trim();
-
-    handleLoading(true);
-
-    fetch(
-      `https://stapi.co/api/v1/rest/animal/search?name=${clearSearchText}&pageNumber=${pageNumber - 1}&pageSize=${perPage}`,
-      {
-        method: "POST",
-      },
-    )
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Response was not ok");
-        }
-
-        return response.json();
-      })
-      .then(({ animals, page }) => {
-        handleTotalPages(page.totalPages);
-        handleResults(animals);
-        handleLoading(false);
-      })
-      .catch((error) => {
-        handleLoading(false);
-        throw new Error(error);
-      });
+  const handleSearchParams = (param: URLSearchParams) => {
+    setSearchParams(param);
   };
 
   useEffect(() => {
@@ -85,20 +45,27 @@ const SearchPage = () => {
 
       if (firstLoader) {
         setFirstLoader(false);
-        handleSearch(searchText);
+        handleSearch(searchTerm);
       }
     } else {
       if (firstLoader) {
         setFirstLoader(false);
       }
 
-      handleSearch(searchText);
+      handleSearch(searchTerm);
     }
-  }, [searchText, perPage]);
+  }, [searchTerm, perPage]);
 
   useEffect(() => {
     if (!firstLoader) {
-      handleSearch(searchText);
+      handleSearch(searchTerm);
+    }
+    console.log(data);
+  }, [pageNumber]);
+
+  useEffect(() => {
+    if (!firstLoader) {
+      handleSearch(searchTerm);
     }
   }, [pageNumber]);
 
@@ -108,19 +75,24 @@ const SearchPage = () => {
     }
   }, [searchParams]);
 
+  if(error) {
+    return 'Loading';
+  }
+  
   return (
     <div className="search-page">
       <div className="search-page__left">
-        <Header searchText={searchText} onSearch={handleSearchText} />
-        <Body loading={loading} results={results} pageNumber={pageNumber} />
-        {loading || !results.length ? null : (
+        <Header searchText={searchTerm} onSearch={handleSearch} />
+        <Body loading={isLoading} results={!data ? [] : data.animals} pageNumber={pageNumber} />
+        {isLoading || (!data ? true : !data.animals.length) ? null : (
           <PaginationResults
-            pageNumber={pageNumber}
-            totalPages={totalPages}
+            pageNumber={!data ? 0 : data?.page.pageNumber}
+            totalPages={!data ? 0 : data?.page.totalPages}
             perPage={perPage}
             handlePerPage={handlePerPage}
           />
         )}
+        <DownloadCsv />
       </div>
 
       <div className="search-page__right">

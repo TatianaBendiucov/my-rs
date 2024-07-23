@@ -23,6 +23,7 @@
     "baseUrl": "./",
     "paths": {
        "*": ["*"],
+       "@store/*": ["store/*"]
     },
   },
   "include": ["src", "tests", "jest.setup.ts"],  

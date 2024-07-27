@@ -14,9 +14,9 @@ const ListItem = ({ item, index, pageNumber }: ListItemProps) => {
 
   return (
     <li key={index}>
-      <input 
-        type="checkbox" 
-        value={item.uid} 
+      <input
+        type="checkbox"
+        value={item.uid}
         onChange={() => handleCheckboxChange(item)}
         checked={itemsFromStore.includes(item)}
       />

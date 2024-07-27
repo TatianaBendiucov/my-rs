@@ -5,7 +5,6 @@ import ListItem from "./ListItem";
 const Body = ({ loading, results, pageNumber }: SearchResultsProps) => {
   const [hasError, setHasError] = useState(false);
 
-  console.log(loading);
   const handleHasError = () => {
     setHasError(true);
   };
@@ -33,7 +32,12 @@ const Body = ({ loading, results, pageNumber }: SearchResultsProps) => {
       {results.length ? (
         <ul>
           {results.map((result, index) => (
-            <ListItem item={result} index={index} pageNumber={pageNumber} key={index}/>
+            <ListItem
+              item={result}
+              index={index}
+              pageNumber={pageNumber}
+              key={index}
+            />
           ))}
         </ul>
       ) : (

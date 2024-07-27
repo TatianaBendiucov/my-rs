@@ -8,7 +8,7 @@
   --link-hover-color: #0056b3;
   --button-bg-color: #007bff;
   --button-hover-bg-color: #0056b3;
-  
+
   font-family: Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.6;
   font-weight: 400;
@@ -59,7 +59,10 @@ button {
   background-color: var(--button-bg-color);
   color: #fff;
   cursor: pointer;
-  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+  transition:
+    background-color 0.3s,
+    color 0.3s,
+    border-color 0.3s;
 }
 button:hover {
   background-color: var(--button-hover-bg-color);
@@ -159,7 +162,9 @@ input[type="text"] {
   color: #fff;
   background-color: var(--primary-color);
   cursor: pointer;
-  transition: background-color 0.3s, color 0.3s;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
 }
 
 .pag-rez-item:hover {

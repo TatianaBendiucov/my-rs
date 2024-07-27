@@ -10,17 +10,25 @@ import DownloadCsv from "../components/DownloadCsv";
 const SearchPage = () => {
   const [firstLoader, setFirstLoader] = useState<boolean>(true);
   const [searchParams, setSearchParams] = useSearchParams();
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [perPage, setPerPage] = useState(10);
   const [pageNumber, setPageNumber] = useState<number>(
-      Number(searchParams.get("page") || 1),
-    );
+    Number(searchParams.get("page") || 1),
+  );
 
-  const { data, error, isLoading } = useSearchItemsQuery({ searchTerm, pageNumber, perPage });
+  const { data, error, isLoading } = useSearchItemsQuery({
+    searchTerm,
+    pageNumber,
+    perPage,
+  });
 
   const handleSearch = (param: string) => {
     setSearchTerm(param);
-    setSearchParams({ searchTerm: param, page: pageNumber.toString(), perPage: perPage.toString()});
+    setSearchParams({
+      searchTerm: param,
+      page: pageNumber.toString(),
+      perPage: perPage.toString(),
+    });
   };
 
   const handlePageNumber = (param: number) => {
@@ -29,7 +37,11 @@ const SearchPage = () => {
 
   const handlePerPage = (param: number) => {
     setPerPage(param);
-     setSearchParams({ searchTerm: searchTerm, page: param.toString(), perPage: param.toString()});
+    setSearchParams({
+      searchTerm: searchTerm,
+      page: param.toString(),
+      perPage: param.toString(),
+    });
   };
 
   const handleSearchParams = (param: URLSearchParams) => {
@@ -60,7 +72,6 @@ const SearchPage = () => {
     if (!firstLoader) {
       handleSearch(searchTerm);
     }
-    console.log(data);
   }, [pageNumber]);
 
   useEffect(() => {
@@ -75,15 +86,19 @@ const SearchPage = () => {
     }
   }, [searchParams]);
 
-  if(error) {
-    return 'Loading';
+  if (error) {
+    return "Loading";
   }
-  
+
   return (
     <div className="search-page">
       <div className="search-page__left">
         <Header searchText={searchTerm} onSearch={handleSearch} />
-        <Body loading={isLoading} results={!data ? [] : data.animals} pageNumber={pageNumber} />
+        <Body
+          loading={isLoading}
+          results={!data ? [] : data.animals}
+          pageNumber={pageNumber}
+        />
         {isLoading || (!data ? true : !data.animals.length) ? null : (
           <PaginationResults
             pageNumber={!data ? 0 : data?.page.pageNumber}

@@ -1,6 +1,6 @@
-import { configureStore } from '@reduxjs/toolkit';
-import { itemReducer } from './itemReducer';
-import itemApi from './listFetchReducer';
+import { configureStore } from "@reduxjs/toolkit";
+import { itemReducer } from "./itemReducer";
+import itemApi from "./listFetchReducer";
 
 export const store = configureStore({
   reducer: {

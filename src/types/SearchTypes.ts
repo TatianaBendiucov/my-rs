@@ -40,17 +40,17 @@ export interface SearchInputProps {
 }
 
 export interface PageResponse {
-  pageNumber: number,
-  pageSize: number,
-  numberOfElements: number,
-  totalElements: number,
-  totalPages: number,
-  firstPage: boolean,
-  lastPage: boolean
+  pageNumber: number;
+  pageSize: number;
+  numberOfElements: number;
+  totalElements: number;
+  totalPages: number;
+  firstPage: boolean;
+  lastPage: boolean;
 }
 
 export interface SearchFullResponse {
-  page: PageResponse,
-  animals: SearchResult[],
-  sort: object,
+  page: PageResponse;
+  animals: SearchResult[];
+  sort: object;
 }

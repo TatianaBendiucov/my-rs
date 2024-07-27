@@ -1,18 +1,18 @@
-import { createSlice } from '@reduxjs/toolkit';
-import type { PayloadAction } from '@reduxjs/toolkit';
-import { SearchResult } from 'src/types/SearchTypes';
+import { createSlice } from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
+import { SearchResult } from "src/types/SearchTypes";
 
 const initialState: { values: SearchResult[] } = {
   values: [],
 };
 
 const itemSlice = createSlice({
-  name: 'item',
+  name: "item",
   initialState,
   reducers: {
     addOrRemove: (state, action: PayloadAction<SearchResult>) => {
       const index = state.values.findIndex(
-        (item) => item.uid === action.payload.uid
+        (item) => item.uid === action.payload.uid,
       );
       if (index >= 0) {
         state.values.splice(index, 1);
@@ -22,7 +22,7 @@ const itemSlice = createSlice({
     },
     removeAll: (state) => {
       state.values = [];
-    }
+    },
   },
 });
 

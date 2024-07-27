@@ -2,6 +2,8 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import DetailPage from '../src/pages/DetailPage';
 import '@testing-library/jest-dom/extend-expect';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { mockStore } from '../tests/mockStore';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -10,20 +12,21 @@ jest.mock('react-router-dom', () => ({
   useParams: jest.fn().mockReturnValue({ detail: '123' }),
 }));
 
+jest.mock('../src/store/listFetchReducer', () => ({
+  ...jest.requireActual('../src/store/__mocks__/listFetchReducer'),
+  useSearchItemsQuery: jest.fn(),
+  useItemDetailQuery: jest.fn(),
+}));
+
+const { useItemDetailQuery } = require('../src/store/listFetchReducer');
+
 describe('DetailPage', () => {
   const mockNavigate = jest.fn();
-  const mockFetch = jest.fn();
-
   beforeEach(() => {
     (require('react-router-dom').useNavigate as jest.Mock).mockReturnValue(mockNavigate);
     (require('react-router-dom').useSearchParams as jest.Mock).mockReturnValue([
       new URLSearchParams('detail=123&page=1'),
     ]);
-    
-    global.fetch = mockFetch.mockResolvedValue({
-      ok: true,
-      json: () => Promise.resolve({ animal: { uid: '123', name: 'Fluffy', earthAnimal: true } }),
-    } as Response);
   });
 
   afterEach(() => {
@@ -31,11 +34,26 @@ describe('DetailPage', () => {
   });
 
   test('renders loading indicator initially', async () => {
+    (useItemDetailQuery as jest.Mock).mockReturnValue({
+      data: null,
+      error: null,
+      isLoading: true,
+      isFetching: false,
+      isSuccess: true,
+      isError: false,
+      refetch: jest.fn(),
+      fulfilledTimeStamp: Date.now(),
+      originalArgs: '123',
+      currentData: { animal: { uid: '123', name: 'Fluffy', earthAnimal: true } },
+    });
+
     render(
       <MemoryRouter initialEntries={['/details/123']}>
-        <Routes>
-          <Route path="/details/:detail" element={<DetailPage />} />
-        </Routes>
+        <Provider store={mockStore}>
+          <Routes>
+            <Route path="/details/:detail" element={<DetailPage />} />
+          </Routes>
+        </Provider>
       </MemoryRouter>
     );
 
@@ -43,7 +61,7 @@ describe('DetailPage', () => {
     await waitFor(() => expect(screen.getByText('Animal detail:')).toBeInTheDocument());
   });
 
-  it('renders fetching of data', async () => {
+  test('renders fetched data correctly', async () => {
     const mockDetail = {
       uid: '123',
       name: 'Lion',
@@ -54,39 +72,38 @@ describe('DetailPage', () => {
       feline: true,
     };
 
-    mockFetch.mockResolvedValueOnce({
-      ok: true,
-      json: async () => ({ animal: mockDetail }),
+    (useItemDetailQuery as jest.Mock).mockReturnValue({
+      data: { animal: mockDetail },
+      error: null,
+      isLoading: false,
+      isFetching: false,
+      isSuccess: true,
+      isError: false,
+      refetch: jest.fn(),
     });
 
     render(
       <MemoryRouter initialEntries={['/details/123']}>
-        <Routes>
-          <Route path="/details/:detail" element={<DetailPage />} />
-        </Routes>
+        <Provider store={mockStore}>
+          <Routes>
+            <Route path="/details/:detail" element={<DetailPage />} />
+          </Routes>
+        </Provider>
       </MemoryRouter>
     );
 
-    await waitFor(() => expect(screen.getByText('Loading...')).toBeInTheDocument());
-
-    await waitFor(() => {
-      expect(mockFetch).toHaveBeenCalledWith('https://stapi.co/api/v1/rest/animal?uid=123', {
-        method: 'GET',
-      });
-    });
-
-    await waitFor(() => {
-      expect(screen.getByText('Lion')).toBeInTheDocument();
-      expect(screen.getByText('123')).toBeInTheDocument();
-    });
+    await waitFor(() => expect(screen.getByText('Lion')).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText('123')).toBeInTheDocument());
   });
 
   test('Ensure that clicking the close button hides the component', async () => {
     render(
       <MemoryRouter initialEntries={['/details/123']}>
-        <Routes>
-          <Route path="/details/:detail" element={<DetailPage />} />
-        </Routes>
+        <Provider store={mockStore}>
+          <Routes>
+            <Route path="/details/:detail" element={<DetailPage />} />
+          </Routes>
+        </Provider>
       </MemoryRouter>
     );
 

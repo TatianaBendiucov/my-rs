@@ -7,3 +7,11 @@ export interface DetailResult {
   canine: boolean;
   feline: boolean;
 }
+
+export interface ItemDetailParams {
+  uid: string;
+}
+
+export interface ItemDetailFullResponse {
+  animal: DetailResult;
+}

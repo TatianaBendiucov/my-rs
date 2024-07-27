@@ -1,4 +1,4 @@
-import { useRef} from "react";
+import { useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { DetailResult } from "../types/DetailType";
 import { useItemDetailQuery } from "../store/listFetchReducer";
@@ -23,11 +23,21 @@ const DetailPage = () => {
   };
 
   const { data, error, isLoading } = useItemDetailQuery({
-    uid: searchParams.get('detail') || '',
+    uid: searchParams.get("detail") || "",
   });
-  console.log(data);
+
+  if (error) {
+    return "<div>Error</div>";
+  }
+
   return (
-    <div style={{ background: 'var(--background)', color: 'var(--color)', padding: '1rem' }}>
+    <div
+      style={{
+        background: "var(--background)",
+        color: "var(--color)",
+        padding: "1rem",
+      }}
+    >
       <div className="detail-page">
         <button ref={buttonRef} onClick={onDismiss}>
           Close

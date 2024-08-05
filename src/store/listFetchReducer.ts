@@ -1,7 +1,8 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { ItemDetailFullResponse, ItemDetailParams } from "src/types/DetailType";
-import { SearchFullResponse } from "src/types/SearchTypes";
-
+import { SearchFullResponse } from "../types/SearchTypes";
+import { ItemDetailFullResponse, ItemDetailParams } from "../types/DetailType";
+import { HYDRATE } from "next-redux-wrapper";
+import type { PayloadAction } from "@reduxjs/toolkit";
 interface SearchParams {
   searchTerm: string;
   pageNumber: number;
@@ -12,6 +13,11 @@ interface SearchParams {
 const itemApi = createApi({
   reducerPath: "itemApi",
   baseQuery: fetchBaseQuery({ baseUrl: "https://stapi.co/api/v1/rest/animal" }),
+  extractRehydrationInfo(action: PayloadAction, { reducerPath }) {
+    if (action.type === HYDRATE) {
+      return action.payload[reducerPath];
+    }
+  },
   endpoints: (builder) => ({
     searchItems: builder.query<SearchFullResponse, SearchParams>({
       query: ({ searchTerm, pageNumber, perPage }) => {
@@ -26,6 +32,5 @@ const itemApi = createApi({
   }),
 });
 
-// Export hooks for usage in functional components, including useDispatch and useSelector
 export const { useSearchItemsQuery, useItemDetailQuery } = itemApi;
 export default itemApi;

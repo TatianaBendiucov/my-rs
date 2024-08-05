@@ -1,17 +1,19 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { itemReducer } from "./itemReducer";
 import itemApi from "./listFetchReducer";
+import { createWrapper } from "next-redux-wrapper";
 
-export const store = configureStore({
-  reducer: {
-    items: itemReducer,
-    // Add the API reducer to the store
-    [itemApi.reducerPath]: itemApi.reducer,
-  },
-  // Add the API middleware to the store
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(itemApi.middleware),
-});
+export const makeStore = () =>
+  configureStore({
+    reducer: {
+      items: itemReducer,
+      [itemApi.reducerPath]: itemApi.reducer,
+    },
+    middleware: (gDM) => gDM().concat(itemApi.middleware),
+  });
 
-export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
+export type AppStore = ReturnType<typeof makeStore>;
+export type RootState = ReturnType<AppStore["getState"]>;
+export type AppDispatch = AppStore["dispatch"];
+
+export const wrapper = createWrapper<AppStore>(makeStore, { debug: true });

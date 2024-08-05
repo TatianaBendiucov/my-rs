@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useRouter } from "next/router";
 import { DetailResult } from "../types/DetailType";
 import { useItemDetailQuery } from "../store/listFetchReducer";
 
@@ -14,20 +14,20 @@ const names = {
 };
 
 const DetailPage = () => {
-  const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
+  const router = useRouter();
+  const { query } = router;
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   const onDismiss = () => {
-    navigate(`/?page=${searchParams.get("page")}`);
+    router.push(`/search?page=${query.page}`);
   };
 
   const { data, error, isLoading } = useItemDetailQuery({
-    uid: searchParams.get("detail") || "",
+    uid: (query.detail as string) || "",
   });
 
   if (error) {
-    return "<div>Error</div>";
+    return <div>Error</div>;
   }
 
   return (

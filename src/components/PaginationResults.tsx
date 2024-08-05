@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import getArrayByNumber from "../utils/getArrayByNumber";
 
 interface PaginationResultsProps {
@@ -23,7 +23,7 @@ const PaginationResults = ({
             <Link
               key={el}
               className={`pag-rez-item${pageNumber - 1 === el ? " current" : ""}`}
-              to={`?page=${el + 1}`}
+              href={`?page=${el + 1}`}
             >
               {el + 1}
             </Link>

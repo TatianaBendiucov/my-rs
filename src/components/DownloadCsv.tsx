@@ -1,10 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
 import { removeAll } from "../store/itemReducer";
 import { RootState } from "../store/store";
-import { SearchResult } from "src/types/SearchTypes";
+import { SearchResult } from "../types/SearchTypes";
+import { saveAs } from "file-saver";
 
 const DownloadCsv = () => {
-  // const itemsData = useSelector((state: RootState) => state.itemApi);
   const checkedItems = useSelector((state: RootState) => state.items.values);
   const dispatch = useDispatch();
 
@@ -24,14 +24,7 @@ const DownloadCsv = () => {
     const csvContent = convertToCSV(checkedItems);
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
 
-    const link = document.createElement("a");
-    const url = URL.createObjectURL(blob);
-    link.setAttribute("href", url);
-    link.setAttribute("download", checkedItems.length + "_animals.csv");
-    link.style.visibility = "hidden";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    saveAs(blob, checkedItems.length + "_animals.csv");
   };
 
   if (checkedItems.length) {

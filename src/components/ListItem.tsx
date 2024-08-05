@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import { RootState } from "../store/store";
-import { ListItemProps, SearchResult } from "src/types/SearchTypes";
+import { ListItemProps, SearchResult } from "../types/SearchTypes";
 import { addOrRemove } from "../store/itemReducer";
+import Link from "next/link";
 
 const ListItem = ({ item, index, pageNumber }: ListItemProps) => {
   const itemsFromStore = useSelector((state: RootState) => state.items.values);
@@ -20,7 +20,7 @@ const ListItem = ({ item, index, pageNumber }: ListItemProps) => {
         onChange={() => handleCheckboxChange(item)}
         checked={itemsFromStore.includes(item)}
       />
-      <Link to={`/details?page=${pageNumber}&detail=${item.uid}`}>
+      <Link href={`/details?page=${pageNumber}&detail=${item.uid}`}>
         <strong>{item.name}</strong> -
         <span>Earth Animal: {item.earthAnimal ? "Yes" : "No"}</span>
       </Link>

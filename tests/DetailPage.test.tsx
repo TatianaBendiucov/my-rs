@@ -1,115 +1,90 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import DetailPage from '../src/pages/DetailPage';
-import '@testing-library/jest-dom/extend-expect';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import { Provider } from 'react-redux';
-import { mockStore } from '../tests/mockStore';
+import { render, screen, fireEvent } from "@testing-library/react";
+import { useRouter } from "next/router";
+import { useItemDetailQuery } from "../src/store/listFetchReducer";
+import DetailPage from "../src/pages/details";
 
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useNavigate: jest.fn(),
-  useSearchParams: jest.fn().mockReturnValue([new URLSearchParams('detail=123&page=1')]),
-  useParams: jest.fn().mockReturnValue({ detail: '123' }),
+jest.mock("next/router", () => ({
+  useRouter: jest.fn(),
 }));
 
-jest.mock('../src/store/listFetchReducer', () => ({
-  ...jest.requireActual('../src/store/__mocks__/listFetchReducer'),
-  useSearchItemsQuery: jest.fn(),
+jest.mock("../src/store/listFetchReducer", () => ({
   useItemDetailQuery: jest.fn(),
 }));
 
-const { useItemDetailQuery } = require('../src/store/listFetchReducer');
+describe("DetailPage", () => {
+  const mockPush = jest.fn();
 
-describe('DetailPage', () => {
-  const mockNavigate = jest.fn();
   beforeEach(() => {
-    (require('react-router-dom').useNavigate as jest.Mock).mockReturnValue(mockNavigate);
-    (require('react-router-dom').useSearchParams as jest.Mock).mockReturnValue([
-      new URLSearchParams('detail=123&page=1'),
-    ]);
+    jest.resetAllMocks();
+
+    (useRouter as jest.Mock).mockReturnValue({
+      query: { page: "1", detail: "123" },
+      push: mockPush,
+    });
   });
 
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-
-  test('renders loading indicator initially', async () => {
+  test("renders loading state", () => {
     (useItemDetailQuery as jest.Mock).mockReturnValue({
       data: null,
       error: null,
       isLoading: true,
-      isFetching: false,
-      isSuccess: true,
-      isError: false,
-      refetch: jest.fn(),
-      fulfilledTimeStamp: Date.now(),
-      originalArgs: '123',
-      currentData: { animal: { uid: '123', name: 'Fluffy', earthAnimal: true } },
     });
 
-    render(
-      <MemoryRouter initialEntries={['/details/123']}>
-        <Provider store={mockStore}>
-          <Routes>
-            <Route path="/details/:detail" element={<DetailPage />} />
-          </Routes>
-        </Provider>
-      </MemoryRouter>
-    );
+    render(<DetailPage />);
 
-    await waitFor(() => expect(screen.getByText('Loading...')).toBeInTheDocument());
-    await waitFor(() => expect(screen.getByText('Animal detail:')).toBeInTheDocument());
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
-  test('renders fetched data correctly', async () => {
-    const mockDetail = {
-      uid: '123',
-      name: 'Lion',
-      earthAnimal: true,
-      earthInsect: false,
-      avian: false,
-      canine: false,
-      feline: true,
+  test("renders error state", () => {
+    (useItemDetailQuery as jest.Mock).mockReturnValue({
+      data: null,
+      error: true,
+      isLoading: false,
+    });
+
+    render(<DetailPage />);
+
+    expect(screen.getByText("Error")).toBeInTheDocument();
+  });
+
+  test("renders data correctly", async () => {
+    const mockData = {
+      animal: {
+        uid: "123",
+        name: "Lion",
+        earthAnimal: true,
+        earthInsect: false,
+        avian: false,
+        canine: true,
+        feline: true,
+      },
     };
 
     (useItemDetailQuery as jest.Mock).mockReturnValue({
-      data: { animal: mockDetail },
+      data: mockData,
       error: null,
       isLoading: false,
-      isFetching: false,
-      isSuccess: true,
-      isError: false,
-      refetch: jest.fn(),
     });
 
-    render(
-      <MemoryRouter initialEntries={['/details/123']}>
-        <Provider store={mockStore}>
-          <Routes>
-            <Route path="/details/:detail" element={<DetailPage />} />
-          </Routes>
-        </Provider>
-      </MemoryRouter>
-    );
+    render(<DetailPage />);
 
-    await waitFor(() => expect(screen.getByText('Lion')).toBeInTheDocument());
-    await waitFor(() => expect(screen.getByText('123')).toBeInTheDocument());
+    expect(await screen.findByText("Name:")).toBeInTheDocument();
+    expect(screen.getByText("Lion")).toBeInTheDocument();
+    expect(screen.getByText("Animal detail:")).toBeInTheDocument();
   });
 
-  test('Ensure that clicking the close button hides the component', async () => {
-    render(
-      <MemoryRouter initialEntries={['/details/123']}>
-        <Provider store={mockStore}>
-          <Routes>
-            <Route path="/details/:detail" element={<DetailPage />} />
-          </Routes>
-        </Provider>
-      </MemoryRouter>
-    );
+  test("clicking Close button triggers router push", () => {
+    (useItemDetailQuery as jest.Mock).mockReturnValue({
+      data: null,
+      error: null,
+      isLoading: false,
+    });
 
-    fireEvent.click(screen.getByText('Close'));
+    render(<DetailPage />);
 
-    await waitFor(() => expect(mockNavigate).toHaveBeenCalledWith(`/?page=1`));
+    const closeButton = screen.getByText("Close");
+    fireEvent.click(closeButton);
+
+    expect(mockPush).toHaveBeenCalledWith("/search?page=1");
   });
-  
 });

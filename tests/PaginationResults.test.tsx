@@ -1,29 +1,51 @@
-import { fireEvent, render } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
-import PaginationResults from '../src/components/PaginationResults';
+import { fireEvent, render } from "@testing-library/react";
+import PaginationResults from "../src/components/PaginationResults";
+import { useRouter } from "next/router";
 
-describe('PaginationResults component', () => {
-    it('updates URL query parameter when page changes', () => {
-      const handlePerPage = jest.fn(); // Mock handlePerPage function
-  
-      const { container, getByText } = render(
-        <MemoryRouter initialEntries={['/?page=1']} initialIndex={0}>
-          <PaginationResults
-            pageNumber={1}
-            totalPages={5} // Replace with your total pages value
-            perPage={10} // Replace with your initial perPage value
-            handlePerPage={handlePerPage}
-          />
-        </MemoryRouter>
-      );
-  
-      // Simulate clicking on a page link
-      fireEvent.click(getByText('2')); // Replace '2' with the page number you want to click
-  
-      // Assert that handlePerPage was not called (since we are testing page change, not perPage change)
-      expect(handlePerPage).not.toHaveBeenCalled();
-  
-      // Assert that the URL query parameter has been updated
-      expect(container.innerHTML).toContain('?page=2');
+jest.mock("next/router", () => ({
+  useRouter: jest.fn(),
+}));
+
+describe("PaginationResults component", () => {
+  it("updates URL query parameter when page changes", () => {
+    const handlePerPage = jest.fn();
+
+    (useRouter as jest.Mock).mockReturnValue({
+      query: { page: "1" },
+      push: jest.fn(),
     });
+
+    const { getByText } = render(
+      <PaginationResults
+        pageNumber={1}
+        totalPages={5}
+        perPage={10}
+        handlePerPage={handlePerPage}
+      />,
+    );
+
+    const page2Link = getByText("2");
+    expect(page2Link.closest("a")).toHaveAttribute("href", "?page=2");
+
+    fireEvent.click(page2Link);
+
+    expect(useRouter().push).not.toHaveBeenCalled();
   });
+
+  it("calls handlePerPage with the correct value when per page changes", () => {
+    const handlePerPage = jest.fn();
+
+    const { getByText } = render(
+      <PaginationResults
+        pageNumber={1}
+        totalPages={5}
+        perPage={10}
+        handlePerPage={handlePerPage}
+      />,
+    );
+
+    fireEvent.click(getByText("20"));
+
+    expect(handlePerPage).toHaveBeenCalledWith(20);
+  });
+});

@@ -1,4 +1,4 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { AnyAction, configureStore, Store } from "@reduxjs/toolkit";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initialState = {
@@ -30,3 +30,30 @@ export type RootState = ReturnType<typeof mockStore.getState>;
 export type AppDispatch = typeof mockStore.dispatch;
 
 export { mockStore };
+
+interface AppState {
+  items: {
+    values: Array<{ uid: string; name: string; earthAnimal: boolean }>;
+  };
+}
+
+const mockReducer = (
+  state: AppState = { items: { values: [] } },
+  action: AnyAction,
+) => {
+  switch (action.type) {
+    case "items/removeAll":
+      return { ...state, items: { values: [] } };
+    default:
+      return state;
+  }
+};
+
+type MockStore = Store<AppState>;
+
+export const createMockStore = (initialState: AppState): MockStore => {
+  return configureStore({
+    reducer: mockReducer,
+    preloadedState: initialState,
+  }) as MockStore;
+};

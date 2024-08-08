@@ -11,7 +11,7 @@ describe("PaginationResults component", () => {
     const handlePerPage = jest.fn();
 
     (useRouter as jest.Mock).mockReturnValue({
-      query: { page: "1" },
+      query: { page: "1", perPage: "10" },
       push: jest.fn(),
     });
 
@@ -25,7 +25,10 @@ describe("PaginationResults component", () => {
     );
 
     const page2Link = getByText("2");
-    expect(page2Link.closest("a")).toHaveAttribute("href", "?page=2");
+    expect(page2Link.closest("a")).toHaveAttribute(
+      "href",
+      "?page=2&perPage=10",
+    );
 
     fireEvent.click(page2Link);
 

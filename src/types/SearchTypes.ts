@@ -18,12 +18,14 @@ export interface SearchResultsProps {
   results: SearchResult[];
   loading: boolean;
   pageNumber: number;
+  perPage: number;
 }
 
 export interface ListItemProps {
   item: SearchResult;
   index: number;
   pageNumber: number;
+  perPage: number;
 }
 
 export interface SearchResultState {

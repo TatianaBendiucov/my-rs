@@ -1,8 +1,14 @@
+"use client";
 import { useState } from "react";
 import { SearchResultsProps } from "../types/SearchTypes";
 import ListItem from "./ListItem";
 
-const Body = ({ loading, results, pageNumber }: SearchResultsProps) => {
+const Body = ({
+  loading,
+  results,
+  pageNumber,
+  perPage,
+}: SearchResultsProps) => {
   const [hasError, setHasError] = useState(false);
 
   const handleHasError = () => {
@@ -36,6 +42,7 @@ const Body = ({ loading, results, pageNumber }: SearchResultsProps) => {
               item={result}
               index={index}
               pageNumber={pageNumber}
+              perPage={perPage}
               key={index}
             />
           ))}

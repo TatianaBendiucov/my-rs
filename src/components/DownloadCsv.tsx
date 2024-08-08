@@ -1,3 +1,4 @@
+"use client";
 import { useDispatch, useSelector } from "react-redux";
 import { removeAll } from "../store/itemReducer";
 import { RootState } from "../store/store";

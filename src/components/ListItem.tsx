@@ -1,10 +1,11 @@
+"use client";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store/store";
 import { ListItemProps, SearchResult } from "../types/SearchTypes";
 import { addOrRemove } from "../store/itemReducer";
 import Link from "next/link";
 
-const ListItem = ({ item, index, pageNumber }: ListItemProps) => {
+const ListItem = ({ item, index, pageNumber, perPage }: ListItemProps) => {
   const itemsFromStore = useSelector((state: RootState) => state.items.values);
   const dispatch = useDispatch();
 
@@ -20,7 +21,9 @@ const ListItem = ({ item, index, pageNumber }: ListItemProps) => {
         onChange={() => handleCheckboxChange(item)}
         checked={itemsFromStore.includes(item)}
       />
-      <Link href={`/details?page=${pageNumber}&detail=${item.uid}`}>
+      <Link
+        href={`/details?page=${pageNumber}&perPage=${perPage}&detail=${item.uid}`}
+      >
         <strong>{item.name}</strong> -
         <span>Earth Animal: {item.earthAnimal ? "Yes" : "No"}</span>
       </Link>

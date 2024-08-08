@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import getArrayByNumber from "../utils/getArrayByNumber";
 
@@ -23,7 +24,7 @@ const PaginationResults = ({
             <Link
               key={el}
               className={`pag-rez-item${pageNumber - 1 === el ? " current" : ""}`}
-              href={`?page=${el + 1}`}
+              href={`?page=${el + 1}&perPage=${perPage}`}
             >
               {el + 1}
             </Link>

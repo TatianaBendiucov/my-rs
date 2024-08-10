@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { ThemeProvider } from "../context/ThemeContext";
+import { ThemeProvider } from "../../app/context/ThemeContext";
 import ErrorBoundary from "../components/ErrorBoundary";
 import "../index.css";
 import { ReduxProvider } from "src/store/reduxProvider";

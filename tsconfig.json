@@ -1,7 +1,7 @@
-{
+{ 
+  "include": ["remix.env.d.ts", "**/*.ts", "**/*.tsx"],
   "compilerOptions": {
-    "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+  "lib": ["DOM", "DOM.Iterable", "ES2019"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
@@ -23,12 +23,5 @@
     ],
     "strictNullChecks": true
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts",
-    "./dist/types/**/*.ts"
-  ],
   "exclude": ["node_modules"]
 }

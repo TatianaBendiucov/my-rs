@@ -1,29 +1,28 @@
-import { useRouter } from "next/navigation";
-import SearchPageClient from "../src/components/SearchPageClient";
-import { useSearchItemsQuery } from "../src/store/listFetchReducer";
+import React from 'react';
+import SearchPageClient from "../app/components/SearchPageClient";
+import { useSearchItemsQuery } from "../app/store/listFetchReducer";
 import { fireEvent, render, screen } from "@testing-library/react";
-import { ThemeProvider } from "../src/context/ThemeContext";
+import { ThemeProvider } from "../app/context/ThemeContext";
+import { useNavigate } from "@remix-run/react";
 
-jest.mock("next/navigation", () => ({
-  useRouter: jest.fn(),
+jest.mock("@remix-run/react", () => ({
+  useNavigate: jest.fn(),
 }));
 
-jest.mock("../src/store/listFetchReducer", () => ({
+jest.mock("../app/store/listFetchReducer", () => ({
   useSearchItemsQuery: jest.fn(),
 }));
 
-jest.mock("../src/components/Body", () => jest.fn(() => <div>Body Mock</div>));
-jest.mock("../src/components/DownloadCsv", () =>
+jest.mock("../app/components/Body", () => jest.fn(() => <div>Body Mock</div>));
+jest.mock("../app/components/DownloadCsv", () =>
   jest.fn(() => <div>DownloadCsv Mock</div>),
 );
 
 describe("SearchPageClient", () => {
-  const mockRouterPush = jest.fn();
+  const mockNavigate = jest.fn();
 
   beforeEach(() => {
-    (useRouter as jest.Mock).mockReturnValue({
-      push: mockRouterPush,
-    });
+    (useNavigate as jest.Mock).mockReturnValue(mockNavigate);
   });
 
   afterEach(() => {
@@ -82,11 +81,14 @@ describe("SearchPageClient", () => {
       </ThemeProvider>,
     );
 
+    const searchInput = screen.getByPlaceholderText("Search");
+    fireEvent.change(searchInput, { target: { value: "new search term" } });
+
     const searchButton = screen.getByText("Search");
     fireEvent.click(searchButton);
 
-    expect(mockRouterPush).toHaveBeenCalledWith(
-      "/search?searchTerm=test&page=1&perPage=10",
+    expect(mockNavigate).toHaveBeenCalledWith(
+      "/search?searchTerm=new search term&page=1&perPage=10",
     );
   });
 
@@ -129,8 +131,6 @@ describe("SearchPageClient", () => {
       </ThemeProvider>,
     );
 
-    expect(
-      screen.queryByText("PaginationResults Mock"),
-    ).not.toBeInTheDocument();
+    expect(screen.queryByText("PaginationResults Mock")).not.toBeInTheDocument();
   });
 });

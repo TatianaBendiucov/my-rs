@@ -1,5 +1,5 @@
-import { itemReducer, addOrRemove, removeAll } from "../src/store/itemReducer";
-import { SearchResult } from "../src/types/SearchTypes";
+import { itemReducer, addOrRemove, removeAll } from "../app/store/itemReducer";
+import { SearchResult } from "../app/types/SearchTypes";
 
 describe("itemReducer", () => {
   const initialState: { values: SearchResult[] } = {

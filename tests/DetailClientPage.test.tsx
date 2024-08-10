@@ -1,15 +1,17 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import { useRouter } from "next/navigation";
-import { useItemDetailQuery } from "../src/store/listFetchReducer";
-import DetailPageClient from "../src/components/DetailPageClient";
-import { useSearchParams } from "next/navigation";
+import { useItemDetailQuery } from "../app/store/listFetchReducer";
+import DetailPageClient from "../app/components/DetailPageClient";
+import { useNavigate } from "@remix-run/react";
 
-jest.mock("next/navigation", () => ({
-  useRouter: jest.fn(),
-  useSearchParams: jest.fn(),
+jest.mock("@remix-run/react", () => ({
+  useNavigate: jest.fn(),
+  useSearchParams: () => [
+    new URLSearchParams("page=1&perPage=10"),
+    jest.fn(),
+  ],
 }));
 
-jest.mock("../src/store/listFetchReducer", () => ({
+jest.mock("../app/store/listFetchReducer", () => ({
   useItemDetailQuery: jest.fn(),
 }));
 
@@ -28,18 +30,11 @@ const initialData = {
 const uid = "1";
 
 describe("DetailPageClient", () => {
-  const useSearchParamsMock = useSearchParams as jest.Mock;
   const useItemDetailQueryMock = useItemDetailQuery as jest.Mock;
-  const mockRouterPush = jest.fn();
+  const mockNavigate = jest.fn();
 
   beforeEach(() => {
-    (useRouter as jest.Mock).mockReturnValue({
-      push: mockRouterPush,
-    });
-
-    useSearchParamsMock.mockReturnValue(
-      new URLSearchParams("page=1&perPage=10"),
-    );
+    (useNavigate as jest.Mock).mockReturnValue(mockNavigate);
 
     useItemDetailQueryMock.mockReturnValue({
       data: initialData,
@@ -69,8 +64,7 @@ describe("DetailPageClient", () => {
 
     fireEvent.click(closeButton);
 
-    const router = useRouter();
-    expect(router.push).toHaveBeenCalledWith("/search?page=1&perPage=10");
+    expect(mockNavigate).toHaveBeenCalledWith("/search?page=1&perPage=10");
   });
 
   it("displays loading text when loading", () => {

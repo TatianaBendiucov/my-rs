@@ -1,7 +1,8 @@
+import React from 'react';
 import { render, screen, fireEvent } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { saveAs } from "file-saver";
-import DownloadCsv from "../src/components/DownloadCsv";
+import DownloadCsv from "../app/components/DownloadCsv";
 import { createMockStore } from "./mockStore";
 
 jest.mock("file-saver", () => ({

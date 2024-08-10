@@ -1,8 +1,8 @@
 import { render, fireEvent } from "@testing-library/react";
-import ListItem from "../src/components/ListItem";
+import ListItem from "../app/components/ListItem";
 import { useSelector, useDispatch } from "react-redux";
-import { addOrRemove } from "../src/store/itemReducer";
-import { ListItemProps, SearchResult } from "../src/types/SearchTypes";
+import { addOrRemove } from "../app/store/itemReducer";
+import { ListItemProps, SearchResult } from "../app/types/SearchTypes";
 import "@testing-library/jest-dom/extend-expect";
 
 jest.mock("react-redux", () => ({
@@ -10,9 +10,9 @@ jest.mock("react-redux", () => ({
   useDispatch: jest.fn(),
 }));
 
-jest.mock("next/link", () => {
-  return ({ children }) => children;
-});
+jest.mock("@remix-run/react", () => ({
+  Link: ({ to, children }) => <a href={to}>{children}</a>,
+}));
 
 describe("ListItem component", () => {
   const item: SearchResult = {
@@ -25,6 +25,7 @@ describe("ListItem component", () => {
     item,
     index: 0,
     pageNumber: 1,
+    perPage: 10
   };
 
   let dispatch;

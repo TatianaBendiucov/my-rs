@@ -1,54 +1,72 @@
-import { fireEvent, render } from "@testing-library/react";
-import PaginationResults from "../src/components/PaginationResults";
-import { useRouter } from "next/router";
+import { render, screen, fireEvent } from "@testing-library/react";
+import PaginationResults from "../app/components/PaginationResults";
+import getArrayByNumber from "../app/utils/getArrayByNumber";
 
-jest.mock("next/router", () => ({
-  useRouter: jest.fn(),
+jest.mock("../app/utils/getArrayByNumber", () => ({
+  __esModule: true,
+  default: jest.fn(),
 }));
 
-describe("PaginationResults component", () => {
-  it("updates URL query parameter when page changes", () => {
-    const handlePerPage = jest.fn();
+jest.mock("@remix-run/react", () => ({
+  Link: ({ to, children }) => <a href={to}>{children}</a>,
+}));
 
-    (useRouter as jest.Mock).mockReturnValue({
-      query: { page: "1", perPage: "10" },
-      push: jest.fn(),
-    });
+describe("PaginationResults", () => {
+  const mockHandlePerPage = jest.fn();
 
-    const { getByText } = render(
-      <PaginationResults
-        pageNumber={1}
-        totalPages={5}
-        perPage={10}
-        handlePerPage={handlePerPage}
-      />,
-    );
-
-    const page2Link = getByText("2");
-    expect(page2Link.closest("a")).toHaveAttribute(
-      "href",
-      "?page=2&perPage=10",
-    );
-
-    fireEvent.click(page2Link);
-
-    expect(useRouter().push).not.toHaveBeenCalled();
+  beforeEach(() => {
+    jest.clearAllMocks();
+    (getArrayByNumber as jest.Mock).mockImplementation((num: number) => Array.from({ length: num }, (_, i) => i));
   });
 
-  it("calls handlePerPage with the correct value when per page changes", () => {
-    const handlePerPage = jest.fn();
-
-    const { getByText } = render(
+  it("should render pagination links correctly", () => {
+    render(
       <PaginationResults
-        pageNumber={1}
+        pageNumber={2}
         totalPages={5}
         perPage={10}
-        handlePerPage={handlePerPage}
-      />,
+        handlePerPage={mockHandlePerPage}
+      />
     );
 
-    fireEvent.click(getByText("20"));
-
-    expect(handlePerPage).toHaveBeenCalledWith(20);
+    const pageLinks = screen.getAllByRole('link');
+    expect(pageLinks).toHaveLength(5);
+    expect(pageLinks[1]).toHaveTextContent("2");
+    expect(pageLinks[2]).toHaveTextContent("3");
   });
+
+  it("should render per page options correctly", () => {
+    const { container } = render(
+      <PaginationResults
+        pageNumber={2}
+        totalPages={5}
+        perPage={20}
+        handlePerPage={mockHandlePerPage}
+      />
+    );
+
+    const perPageOptions = container.querySelectorAll(".pag-rez-item");
+    expect(perPageOptions).toHaveLength(3);
+    expect(perPageOptions[0]).toHaveTextContent("10");
+    expect(perPageOptions[1]).toHaveTextContent("20");
+    expect(perPageOptions[2]).toHaveTextContent("30");
+    expect(perPageOptions[1]).toHaveClass("current");
+  });
+
+  it("should call handlePerPage with correct arguments on per page item click", () => {
+    render(
+      <PaginationResults
+        pageNumber={2}
+        totalPages={5}
+        perPage={10}
+        handlePerPage={mockHandlePerPage}
+      />
+    );
+
+    const perPageItem = screen.getAllByText(20);
+    fireEvent.click(perPageItem[0]);
+
+    expect(mockHandlePerPage).toHaveBeenCalledWith(20);
+  });
+
 });

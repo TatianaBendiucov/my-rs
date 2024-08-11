@@ -12,6 +12,18 @@ const config: Config.InitialOptions = {
       },
     ],
   },
+  collectCoverageFrom: ['src/**'],  
+  modulePathIgnorePatterns: [
+    '/src/root.tsx',
+    '/src/context/ThemeContext.tsx',
+    '/src/store/store.ts',
+    '/src/hooks/useSearchQuery.tsx',
+    '/src/pages/_app.tsx',
+    '/src/types/DetailType.ts',
+    '/src/types/ErrorBoundaryTypes.ts',
+    '/src/types/SearchTypes.ts',
+    '/src/types/ThemeType.ts'
+  ],
 };
 
 export default config;

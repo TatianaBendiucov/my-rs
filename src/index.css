@@ -131,9 +131,6 @@ select:focus {
     font-size: 14px;
   }
 }
-.validation-error {
-  color: red;
-}
 
 .tile-container {
   display: flex;
@@ -217,4 +214,8 @@ input[list] {
   border-radius: 4px;
   box-sizing: border-box;
   background-color: #fff;
+}
+
+.form-control{
+  height: 75px;
 }

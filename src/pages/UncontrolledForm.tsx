@@ -78,37 +78,36 @@ const UncontrolledFormPage = () => {
 
   return (
     <form onSubmit={handleSubmit} autoComplete="off">
-      <div>
+      <div className="form-control">
         <label htmlFor="name">Name</label>
         <input type="text" id="name" ref={nameRef} />
-        {errors.name && <p className="validation-error">{errors.name}</p>}
+        {errors.name && <p className="error">{errors.name}</p>}
       </div>
-      <div>
+      <div className="form-control">
         <label htmlFor="age">Age</label>
         <input type="number" id="age" ref={ageRef} />
-        {errors.age && <p className="validation-error">{errors.age}</p>}
+        {errors.age && <p className="error">{errors.age}</p>}
       </div>
-      <div>
+      <div className="form-control">
         <label htmlFor="email">Email</label>
         <input type="email" id="email" ref={emailRef} />
-        {errors.email && <p className="validation-error">{errors.email}</p>}
+        {errors.email && <p className="error">{errors.email}</p>}
       </div>
-      <div>
-        <label htmlFor="password">Password</label>
+      <div className="form-control">
+        <label htmlFor="password">Password <PasswordStrengthIndicator password={passwordRef.current?.value} /></label>
         <input type="password" id="password" ref={passwordRef} />
         {errors.password && (
-          <p className="validation-error">{errors.password}</p>
-        )}
-        <PasswordStrengthIndicator password={passwordRef.current?.value} />
+          <p className="error">{errors.password}</p>
+        )}        
       </div>
-      <div>
+      <div className="form-control">
         <label htmlFor="confirmPassword">Confirm Password</label>
         <input type="password" id="confirmPassword" ref={confirmPasswordRef} />
         {errors.confirmPassword && (
-          <p className="validation-error">{errors.confirmPassword}</p>
+          <p className="error">{errors.confirmPassword}</p>
         )}
       </div>
-      <div>
+      <div className="form-control">
         <label htmlFor="gender">Gender</label>
         <select id="gender" ref={genderRef}>
           <option value="">Select Gender</option>
@@ -116,14 +115,14 @@ const UncontrolledFormPage = () => {
           <option value="female">Female</option>
           <option value="other">Other</option>
         </select>
-        {errors.gender && <p className="validation-error">{errors.gender}</p>}
+        {errors.gender && <p className="error">{errors.gender}</p>}
       </div>
-      <div>
+      <div className="form-control">
         <label htmlFor="terms">Accept Terms & Conditions</label>
         <input type="checkbox" id="terms" ref={termsRef} />
-        {errors.terms && <p className="validation-error">{errors.terms}</p>}
+        {errors.terms && <p className="error">{errors.terms}</p>}
       </div>
-      <div>
+      <div className="form-control">
         <label htmlFor="picture">Upload Picture</label>
         <input
           type="file"
@@ -131,9 +130,9 @@ const UncontrolledFormPage = () => {
           ref={pictureRef}
           accept="image/png, image/jpeg"
         />
-        {errors.picture && <p className="validation-error">{errors.picture}</p>}
+        {errors.picture && <p className="error">{errors.picture}</p>}
       </div>
-      <div>
+      <div className="form-control">
         <label htmlFor="country">Country</label>
         <input id="country" ref={countryRef} list="country-options" />
         <datalist id="country-options">

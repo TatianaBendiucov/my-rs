@@ -7,8 +7,6 @@ export const PasswordStrengthIndicator = ({ password }) => {
   const strengthColor = ["", "red", "orange", "blue", "green"][score];
 
   return (
-    <div>
-      <p style={{ color: strengthColor }}>{strengthLabel}</p>
-    </div>
+    <span style={{ color: strengthColor }}>{strengthLabel}</span>
   );
 };

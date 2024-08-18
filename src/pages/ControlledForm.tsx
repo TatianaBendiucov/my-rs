@@ -17,7 +17,7 @@ const ControlledFormPage = () => {
   const {
     control,
     handleSubmit,
-    formState: { errors, isValid, touchedFields },
+    formState: { errors, isValid },
     watch,
   } = useForm<UserFormValues>({
     resolver: useYupValidationResolver(validationSchema),
@@ -60,30 +60,30 @@ const ControlledFormPage = () => {
   };
 
   const password = watch("password");
-
+  
   return (
     <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
-      <div>
+      <div className="form-control">
         <label htmlFor="name">Name</label>
         <Controller
           name="name"
           control={control}
-          render={({ field }) => <input type="text" id="name" {...field} />}
+          render={({ field }) => <input type="text" id="name" {...field}/>}
         />
         {errors.name && <p className="error">{errors.name.message}</p>}
       </div>
 
-      <div>
+      <div className="form-control">
         <label htmlFor="age">Age</label>
         <Controller
           name="age"
           control={control}
-          render={({ field }) => <input type="number" id="age" {...field} />}
+          render={({ field }) => <input type="number" id="age" {...field} value={field.value || ''}/>}
         />
         {errors.age && <p className="error">{errors.age.message}</p>}
       </div>
 
-      <div>
+      <div className="form-control">
         <label htmlFor="email">Email</label>
         <Controller
           name="email"
@@ -93,26 +93,25 @@ const ControlledFormPage = () => {
         {errors.email && <p className="error">{errors.email.message}</p>}
       </div>
 
-      <div>
-        <label htmlFor="password">Password</label>
+      <div className="form-control">
+        <label htmlFor="password">Password <PasswordStrengthIndicator password={password} /></label>
         <Controller
           name="password"
           control={control}
           render={({ field }) => (
-            <input type="password" id="password" {...field} />
+            <input type="password" id="password" {...field}/>
           )}
         />
-        {errors.password && <p className="error">{errors.password.message}</p>}
-        <PasswordStrengthIndicator password={password} />
+        {errors.password && <p className="error">{errors.password.message}</p>}        
       </div>
 
-      <div>
+      <div className="form-control">
         <label htmlFor="confirmPassword">Confirm Password</label>
         <Controller
           name="confirmPassword"
           control={control}
           render={({ field }) => (
-            <input type="password" id="confirmPassword" {...field} />
+            <input type="password" id="confirmPassword" {...field}/>
           )}
         />
         {errors.confirmPassword && (
@@ -120,7 +119,7 @@ const ControlledFormPage = () => {
         )}
       </div>
 
-      <div>
+      <div className="form-control">
         <label htmlFor="gender">Gender</label>
         <Controller
           name="gender"
@@ -137,7 +136,7 @@ const ControlledFormPage = () => {
         {errors.gender && <p className="error">{errors.gender.message}</p>}
       </div>
 
-      <div>
+      <div className="form-control">
         <Controller
           name="terms"
           control={control}
@@ -156,7 +155,7 @@ const ControlledFormPage = () => {
         {errors.terms && <p className="error">{errors.terms.message}</p>}
       </div>
 
-      <div>
+      <div className="form-control">
         <label htmlFor="picture">Upload Picture</label>
         <Controller
           name="picture"
@@ -173,7 +172,7 @@ const ControlledFormPage = () => {
         {errors.picture && <p className="error">{errors.picture.message}</p>}
       </div>
 
-      <div>
+      <div className="form-control">
         <label htmlFor="country">Country</label>
         <Controller
           name="country"
@@ -207,7 +206,7 @@ const ControlledFormPage = () => {
       <button
         className="btn"
         type="submit"
-        disabled={!isValid && Object.keys(touchedFields).length > 0}
+        disabled={!isValid}
       >
         Submit
       </button>

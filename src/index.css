@@ -1,0 +1,221 @@
+form {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+form div {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="email"],
+input[type="password"],
+input[type="file"],
+select {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input[type="file"] {
+  padding: 5px;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+  margin-right: 8px;
+}
+
+datalist option {
+  font-size: 14px;
+}
+
+.btn {
+  background-color: #aeb2b6; /* Primary color */
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition:
+    background-color 0.3s ease,
+    box-shadow 0.3s ease;
+  margin-right: 10px; /* Space between buttons */
+}
+
+.btn:hover {
+  background-color: #616c77; /* Darker shade on hover */
+}
+
+.btn:active {
+  background-color: #616c77; /* Even darker shade when pressed */
+}
+
+/* Submit button styling */
+button[type="submit"] {
+  background-color: #28a745; /* Success color */
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition:
+    background-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #218838; /* Darker shade on hover */
+}
+
+button[type="submit"]:active {
+  background-color: #1e7e34; /* Even darker shade when pressed */
+}
+
+button:disabled,
+button[disabled] {
+  background-color: #d6d6d6; /* Light gray background */
+  color: #a9a9a9; /* Darker gray text */
+  cursor: not-allowed; /* Not-allowed cursor */
+  border: 1px solid #ccc; /* Gray border */
+  box-shadow: none; /* No shadow */
+}
+
+/* Disabled button hover effect */
+button:disabled:hover,
+button[disabled]:hover {
+  background-color: #d6d6d6; /* Keep the same gray background */
+}
+
+.error {
+  color: #d9534f;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+#picture {
+  padding: 0;
+}
+
+@media (max-width: 600px) {
+  form {
+    padding: 15px;
+  }
+
+  button[type="submit"] {
+    padding: 10px;
+    font-size: 14px;
+  }
+}
+
+.tile-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+}
+
+.tile {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  width: 300px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  flex: 1 1 300px;
+}
+
+.tile img {
+  max-width: 100px;
+  height: auto;
+  display: block;
+  margin-top: 8px;
+}
+
+.tile strong {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.tile:hover,
+.with-new:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.tile img {
+  width: 100px;
+}
+
+.with-new:last-child {
+  border: 2px solid red;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.autocomplete-list {
+  position: absolute;
+  z-index: 10;
+  width: 500px;
+  max-height: 200px;
+  overflow-y: auto;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-top: none;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.autocomplete-item {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.autocomplete-item:hover {
+  background-color: #f0f0f0;
+}
+
+input[list] {
+  display: inline-block;
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  background-color: #fff;
+}
+
+.form-control{
+  height: 75px;
+}
